@@ -1,0 +1,143 @@
+/* Global css */
+:root {
+  --appGreen: #1dcf9f;
+  --appGreenLight: #ecfffb;
+  --appGray: #f9fbfc;
+  --appGray: #f9fbfc;
+}
+
+
+/* Global classes */
+.app-green-bg{
+  background-color: var(--appGreen) !important;
+}
+
+.app-green-color{
+   color: var(--appGreen) !important;
+}
+
+.rounded-60{
+  border-radius: 60px !important;
+}
+.rounded-10{
+  border-radius: 10px !important;
+}
+
+.text-bold{
+  font-weight: bold !important;
+}
+
+
+html{
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.carosel-con{
+height: 100vh !important;
+background-color: #eee;
+/* border: 4px solid red */
+
+
+}
+
+.carousel-item{
+height: 100vh !important;
+overflow: hidden !important;
+}
+
+.carousel-item .img{
+vertical-align: middle;
+border-style: none;
+o-object-fit: cover;
+object-fit: cover;
+width: 100%;
+height: 100%;
+
+}
+
+.welcome .h1{
+  font-weight: 800;
+  padding: 60px;
+  font-size: 70px;
+}
+
+.welcome .h1 span{
+  text-decoration: underline;
+  
+}
+
+.text-info-light{
+  color: #61dafb;
+}
+
+/* Post */
+.posts{
+  min-height: 300px;
+}
+
+.footer-menu{
+  /* position: fixed !important; */
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+}
+
+
+/* Override */
+button:focus {
+  outline: 1px dotted;
+  outline: none !important;
+  outline: 0 !important;
+  outline: 0px auto #f0f2f5 !important;
+}
+@media (min-width: 768px) {
+   ::-webkit-scrollbar,
+   ::-webkit-scrollbar-thumb {
+      width: 15px;
+      border-radius: 50px;
+      background-clip: padding-box;
+      height: 10px !important;
+      background-color: transparent !important;
+  }
+   ::-webkit-scrollbar-thumb {
+      background-color: lightgray !important;
+  }
+}
+
+
