@@ -1,7 +1,9 @@
-import { GET_PRODUCT_API, GET_PRODUCT_API_ERROR } from '../constants/action-types';
+import { GET_PRODUCT_API} from '../constants/action-types';
 
 const initialState = {
     products: [],
+    singleProduct: {},
+    cartProducts:  [],
 }
 
  function rootReducer(state = initialState, action) {
@@ -12,6 +14,13 @@ const initialState = {
             products: state.products.concat(action.payload)
           });
      }
+
+    //  if(action.type === ADD_PRODUCT_TO_CART){
+    //    return Object.assign({}, state, {
+    //     cartProducts: state.cartProducts.concat(action.payload)
+    //      });
+    // }
+    
     return state;
 }
 

@@ -1,9 +1,10 @@
 import { takeEvery, call, put } from "redux-saga/effects";
 import { GET_PRODUCT_API, GET_PRODUCT_API_ERROR, GET_PRODUCT_API_REQUEST } from '../constants/action-types';
-import axios from "axios";
+// import axios from "axios";
 
 
 export default function* watcherSaga() {
+  console.log('Action GET_PRODUCT_API_REQUEST SAGA')
   yield takeEvery( GET_PRODUCT_API_REQUEST, workerSaga);
 }
 
@@ -18,8 +19,8 @@ function* workerSaga(action){
   }
 }
 
-
 function getProduct() {
-  return  axios.get("https://fakestoreapi.com/products").then(res => res.data);
+  return
+  // return  axios.get("https://fakestoreapi.com/products").then(res => res.data);
 }
 
