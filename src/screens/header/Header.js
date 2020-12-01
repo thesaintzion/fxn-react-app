@@ -13,30 +13,19 @@ import ProductCart from '../products/ProductCart';
 
 function Header(props) {
 
-  const [productCartDialogOpen, setProductCartDialogOpen] = React.useState(false);
+ 
 
-  const openProductCartDialog = () =>{
-    props.productsCount > 0 && setProductCartDialogOpen(true);
-    
-  }
-
-  // Close Product Cart Dialog
-  const closeProductCartDialog = () =>{
-    setProductCartDialogOpen(false)
-    }
-
+ 
     return (
       <>
-      <ProductCart cartProducts={props.cartProducts} updateLocalStorage={props.updateLocalStorage}  closeProductCartDialog={closeProductCartDialog} open={productCartDialogOpen}/> 
-
         <AppBar position="sticky" className="shadow-sm bg-white">
         <div className="container">
         <Toolbar variant="dense"  className="d-flex justify-content-between align-content-center align-items-center bg-white">
-          <Typography variant="h6" className="mb-0 app-green-color">
+          <Typography variant="h6" className="mb-0 text-dark">
             St. Shop
           </Typography>
 
-          <IconButton onClick={openProductCartDialog} aria-label="upload picture" component="span">
+          <IconButton onClick={props.openProductCartDialog} aria-label="upload picture" component="span">
             <Badge badgeContent={props.productsCount > 0 ? props.productsCount : '0'} color="secondary">
             <ShoppingCartIcon className="app-green-color" />
             </Badge>

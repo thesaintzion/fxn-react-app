@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import SingleProduct from './SingleProduct';
 import './products.css';
-import {connect} from 'react-redux';
 import ViewSingleProduct from './ViewSingleProduct';
-import { getProduct } from '../../redux/actions/actions';
 import axios from "axios";
 import Loading from '../Loading';
 
@@ -22,7 +20,6 @@ import Loading from '../Loading';
 
     componentDidMount(){
         this.getProducts();
-        console.log('PROPS', this.props)
     }
 
 
@@ -69,14 +66,15 @@ import Loading from '../Loading';
        
         return (
             <>
-            { this.state.viewProductDialogOpen ? <ViewSingleProduct id={this.selectedProduct}  addProductToCart={this.addProductToCart}  closeViewProductDialog={this.closeViewProductDialog} open={this.state.viewProductDialogOpen}/> : null }
+            { this.state.viewProductDialogOpen ? <ViewSingleProduct  removeCartProduct={this.props.removeCartProduct}  clearCart={this.props.clearCart} id={this.state.selectedProduct}  addProductToCart={this.addProductToCart}  closeViewProductDialog={this.closeViewProductDialog} open={this.state.viewProductDialogOpen}/> : null }
 
              {this.state.loading ? <Loading/> : 
-            <main className="pb-3 pt-5">
+            <main className="pb-3 pt-5 ">
                 <div className="container">
-                    <h6 className="mb-4 ">Products</h6>
+                    {/* <h6 className="mb-4 ">Products</h6> */}
                     <div className="row animated fadeInUp">
                         { this.state.products.length > 0 ? this.state.products.map(product => (
+
                         <div key={product.id} onClick={() => this.openViewProductDialog(product.id)} className="col-lg-3 mb-5">
                         <SingleProduct  product={product}/>
                        

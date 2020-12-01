@@ -7,7 +7,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Slide from '@material-ui/core/Slide';
-import iphone from '../../assets/img/iphone.jpg';
 import axios from "axios";
 import  AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import ProductCart from './ProductCart';
@@ -25,22 +24,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
      this.state = {
        loading: true,
       productCartDialogOpen: false,
-      product: {
-        category: "electronics",
-description: "3D NAND flash are applied to deliver high transfer speeds Remarkable transfer speeds that enable faster bootup and improved overall system performance. The advanced SLC Cache Technology allows performance boost and longer lifespan 7mm slim design suitable for Ultrabooks and Ultra-slim notebooks. Supports TRIM command, Garbage Collection technology, RAID, and ECC (Error Checking & Correction) to provide the optimized performance and enhanced reliability.",
-id: 11,
-image: "https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_.jpg",
-price: 109,
-title: "Silicon Power 256GB SSD 3D NAND A55 SLC Cache Performance Boost SATA III 2.5",
-        "amount": 1
-        },
-       
+      product: {},
      }
    }
 
    componentDidMount(){
     this.getProduct();
-    console.log('id',id);
   }
 
   //  Close dialog
@@ -50,17 +39,22 @@ title: "Silicon Power 256GB SSD 3D NAND A55 SLC Cache Performance Boost SATA III
 
     // Get product from API
     getProduct = () => {
-    axios.get("https://fakestoreapi.com/products/1").then(res => {
-      console.log('Got product', res.data);
-      this.setState({
-        product: res.data
-    }); 
-    }).catch(err => {
-        console.log('Got error', err);
-        this.setState({
-            error: err
+      if(this.props?.id){
+        axios.get(`https://fakestoreapi.com/products/${this.props?.id}`).then(res => {
+          let cloneData = {...res.data};
+          cloneData.amount = 1;
+          this.setState({
+            product: cloneData,
+            loading: false
         }); 
-    })
+        }).catch(err => {
+            this.setState({
+                error: err,
+                loading: false
+            }); 
+            
+        })
+      }
     }
 
     // Close Product Cart Dialog
@@ -80,15 +74,9 @@ title: "Silicon Power 256GB SSD 3D NAND A55 SLC Cache Performance Boost SATA III
       
     // Add product to cart
     addProductToCart = () =>{
-          this.setState({
-            productCartDialogOpen: true
-          })
           this.props.closeViewProductDialog();
           this.props.addProductToCart(this.state.product);
       }
-
-   
-
 
 
   render() {
@@ -96,7 +84,9 @@ title: "Silicon Power 256GB SSD 3D NAND A55 SLC Cache Performance Boost SATA III
       <div>
 
         {/* Cart Dialog */}
- <ProductCart  closeProductCartDialog={this.closeProductCartDialog} open={this.state.productCartDialogOpen}/>  
+       
+   
+
 
           <Dialog className="product-view-dialog" open={this.props?.open} onClose={this.closeViewProductDialog}  scroll="paper" TransitionComponent={Transition} >
         <AppBar  position="sticky" className=" app-green-bg">
@@ -109,7 +99,7 @@ title: "Silicon Power 256GB SSD 3D NAND A55 SLC Cache Performance Boost SATA III
             </Typography>
           </Toolbar>
         </AppBar>
-      <div className="container mt-4">
+      <div className="container mt-5">
       {this.state.loading ?  
            <div className="text-center w-100">
             <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
@@ -117,19 +107,19 @@ title: "Silicon Power 256GB SSD 3D NAND A55 SLC Cache Performance Boost SATA III
             :
             <div className="row">
             <div className="col-lg-6">
-                  <img src={iphone} className="w-100  border rounded-10" alt="iphone"/>
-            {/* <img src={product?.image} className="w-100  border rounded-10"/> */}
+            <img src={this.state.product?.image} className="w-100  shadow-sm rounded-10" alt={this.state.product?.title}/>
             </div>
             
             <div className="col-lg-6">
             <h6  className="app-green-color mb-0 mb-3 mt-4"> 
-            &#8358;{this.state.product?.price?.toLocaleString(undefined, {maximumFractionDigits:2})}
+             &#8358;{this.state.product?.price?.toLocaleString(undefined, {maximumFractionDigits:2})}
             </h6>
      
-            <p className="mb-4">Category: {this.state.product?.category}</p>
-            <p className="bg-light p-2 rounded-10 ">{this.state.product?.description}</p>
+            <p className="mb-3">Category: <span> {this.state.product?.category}</span></p>
+
+            <p className="app-green-light-bg p-2 rounded-10 ">{this.state.product?.description}</p>
    
-            <div className="text-center p-3">
+            <div className="text-center  mb-5">
             <Button  onClick={this.addProductToCart} className="rounded-60 mt-5 app-green-bg text-white px-3"><span>Add to cart </span> <AddShoppingCartIcon/></Button>
             </div>
               </div>

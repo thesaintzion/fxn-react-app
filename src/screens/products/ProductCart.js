@@ -9,11 +9,11 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CloseIcon from '@material-ui/icons/Close';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Slide from '@material-ui/core/Slide';
-import iphone from '../../assets/img/iphone.jpg';
 import  ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Badge from '@material-ui/core/Badge';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import MakePayment from './MakePayment';
 
 
 
@@ -29,12 +29,13 @@ class ProductCart extends React.Component {
           totalPrice:  0,
           loading: true,
           products: [],
+          makePayment: true
           
         }
       }
 
-     
 
+// Get total Price
   totalPrice = () =>{
     return this.props.cartProducts ? this.props.cartProducts.reduce((sum, { price, amount }) => sum + price * amount, 0) : 0
   }
@@ -42,9 +43,16 @@ class ProductCart extends React.Component {
 
     // Make payment
   makePayment = () => {
-    this.props.closeProductCartDialog();
+    this.setState({
+      makePayment: true
+    })
   }
 
+  cancelPayment = () => {
+    this.setState({
+      makePayment: false
+    })
+  }
 
    //  Close dialog
    closeProductCartDialog = () =>{
@@ -63,22 +71,33 @@ class ProductCart extends React.Component {
       this.props.updateLocalStorage(itemArray);
     }
 
-   
+    removeCartProduct = (id) => {
+     console.log('Prod Car', this.props)
+    // this.props.removeCartProduct(id);
+   }
+    
+
      render() {
        return (
          <div>
              <Dialog className="product-view-dialog dialog-green-light-bg" open={this.props?.open} onClose={this.closeProductCartDialog}  scroll="paper" TransitionComponent={Transition} >
            <AppBar  position="sticky" className=" app-green-bg">
-             <Toolbar variant="dense" >
+             <Toolbar variant="dense"  className="d-flex justify-content-between">
+               <div className="d-flex align-items-center">
                <IconButton  onClick={this.closeProductCartDialog} edge="start" color="inherit" aria-label="close">
                  <ArrowBackIcon />
                </IconButton>
-               <Typography variant="h6">
-                <span className="mr-4">Cart</span> 
-                  <Badge badgeContent={this.props?.cartProducts?.length} color="secondary">
+               <Typography variant="h6" className="ml-3">
+                <span className="mr-3">Cart</span> 
+                <Badge badgeContent={this.props?.cartProducts?.length} color="secondary">
                   <ShoppingCartIcon/>
                   </Badge>
-               </Typography>
+                </Typography>
+                </div>
+              
+              <div>
+              <Button className="app-green-light-bg" onClick={this.props.clearCart}>CLear</Button>
+              </div>
              </Toolbar>
            </AppBar>
 
@@ -87,28 +106,33 @@ class ProductCart extends React.Component {
             <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
             </div> : 
             <main className="pb-3 pt-5 app-green-light-b mh-100">
-                <div className="container">  
+                <div className="container px-lg-4">  
+                        {this.state.makePayment ? <MakePayment cancelPayment={this.cancelPayment}  amount={this.totalPrice()}/> 
+                        :
+                        <div>
                         { this.props?.cartProducts?.length > 0 ? this.props?.cartProducts?.map(product => (
 
-                        <div key={product.id}  className="shadow-sm rounded-10 mb-3 overflow-hidden d-flex justify-content-between bg-white">
+                        <div key={product.id}  className="shadow-sm rounded-10 mb-3 overflow-hidden d-flex justify-content-between align-items-center bg-light">
                         <div>
-                          <img  width="100" height="100" src={iphone}  alt={product?.title}/>
+                          <img  width="100"  src={product?.image}  alt={product?.title}/>
                         </div>
-                        <div className="w-100 py-2 px-3 border-left">
+
+                        <div className="w-100 py-2 px-3 bg-white">
                         <p className="mb-0" >{product?.title}</p>
+                        
                         <p  className="app-green-color mb-0"> 
                         &#8358;{product?.price?.toLocaleString(undefined, {maximumFractionDigits:2})}
-                          </p>
+                        </p>
 
-                    <div className="d-flex justify-content-end align-items-center">
+                    <div className="d-flex mt-3 justify-content-end align-items-center">
                       <div className="mr-5 text-right">
                       
                     <TextField  className="d-inline-block w-50" label="Quantity" variant="outlined" type="number" onChange={(e) =>  this.onChange(product, e)} name="amount" defaultValue={product?.amount} size="small" />
                       </div>
 
                       <div>
-                      <IconButton title="Remove item?" edge="start" color="inherit" aria-label="remove">
-                                    <CloseIcon className="text-danger"  />
+                      <IconButton onClick={() => this.props.removeCartProduct(product.id)} title="Remove item?" edge="start" color="inherit" aria-label="remove">
+                          <CloseIcon  className="text-danger"  />
                       </IconButton>
                       </div>
                       </div>     
@@ -116,20 +140,21 @@ class ProductCart extends React.Component {
                         </div>
                         )) : <p className="text-center col mt-5">No Products Found</p>}
                         
-                    
 
-           <div  className="mt-4 mb-5 pr-3">
-           {/* <li className="text-right">Total Product:  <strong>{this.state?.products?.length}</strong></li> */}
-                        <li  className="text-right">Total Price:  <h3 className="app-green-color mb-0">&#8358;{this.totalPrice().toLocaleString(undefined, {maximumFractionDigits:2})}</h3></li>
-           </div>
-                       
-           
-
-                  <div className="text-center mt-5">
-                  <Button  onClick={this.makePayment} className="rounded-60 app-green-bg text-white px-3"><span> Make Payment </span> <ArrowForwardIcon/></Button>
+                      <div  className="mt-4 mb-5 pr-3">
+                          <li  className="text-right">Total Price:  <h3 className="app-green-color mb-0">&#8358;{this.totalPrice().toLocaleString(undefined, {maximumFractionDigits:2})}</h3></li>
+                      </div>
+                           <br/><br/> <br/><br/>   <br/><br/>   
+                  <div className="text-center mt-5 mb-5 d-flex justify-content-around">
+                  <Button onClick={this.closeProductCartDialog} className="rounded-60 app-green-color bg-white shadow-sm"><ArrowBackIcon/> <span> Continue Shopping </span></Button>  <Button  onClick={this.makePayment} className="rounded-60 app-green-bg text-white shadow-sm"><span> Make Payment </span> <ArrowForwardIcon/></Button>
                 </div>
 
+                </div>
+     }
+
                </div>
+
+
                </main>
     }
 
