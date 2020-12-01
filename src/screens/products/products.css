@@ -43,6 +43,10 @@ background-color:  var(--appGreenLight);
     width: 100%;
 }
 
+.product-view-dialog.dialog-green-light-bg .MuiDialog-paperWidthSm {
+    background-color: var(--appGreenLight) !important;
+}
+
 .cart-item-image{
     height: 200px;
     background-size: cover;

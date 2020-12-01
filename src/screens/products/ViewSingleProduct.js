@@ -26,17 +26,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
        loading: true,
       productCartDialogOpen: false,
       product: {
-        "id": 4,
-      "title": "Mens Casual Slim Fit",
-      "price": 15.99,
-      "description": "The color could be slightly different between on the screen and in practice. / Please note that body builds vary by person, therefore, detailed size information should be reviewed below on the product description.",
-      "category": "men clothing",
-      "image": "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg",
+        category: "electronics",
+description: "3D NAND flash are applied to deliver high transfer speeds Remarkable transfer speeds that enable faster bootup and improved overall system performance. The advanced SLC Cache Technology allows performance boost and longer lifespan 7mm slim design suitable for Ultrabooks and Ultra-slim notebooks. Supports TRIM command, Garbage Collection technology, RAID, and ECC (Error Checking & Correction) to provide the optimized performance and enhanced reliability.",
+id: 11,
+image: "https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_.jpg",
+price: 109,
+title: "Silicon Power 256GB SSD 3D NAND A55 SLC Cache Performance Boost SATA III 2.5",
         "amount": 1
         },
        
      }
    }
+
+   componentDidMount(){
+    this.getProduct();
+    console.log('id',id);
+  }
 
   //  Close dialog
   closeViewProductDialog = () =>{
@@ -75,53 +80,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
       
     // Add product to cart
     addProductToCart = () =>{
-       this.addToLocalStorage();
-      this.props.closeViewProductDialog();
-      setTimeout( () => {
-        this.openProductCartDialog();
-      }, 1000)
-     
-     
+          this.setState({
+            productCartDialogOpen: true
+          })
+          this.props.closeViewProductDialog();
+          this.props.addProductToCart(this.state.product);
       }
 
-      // Add to local storage
-      addToLocalStorage = () =>{
-        // 01. Check  if item exists...  
-        let cardProducts =  localStorage.getItem('cardProducts')
-        if(cardProducts){
+   
 
-          let itemArray = JSON.parse(cardProducts);
-          let itemExist =  itemArray.filter((item) => item.id === this.state.product.id);
-
-        if(itemExist.length > 0){
-         alert("Item already in cart...");
-          console.log('Exists', itemExist);
-        }else{
-          // Add new
-          itemArray.push(this.state.product)
-          let newItemString = JSON.stringify(itemArray);
-          localStorage.setItem('cardProducts',  newItemString);
-          console.log('Added New', this.state.product);
-
-          alert("Item added");
-        }
-
-        }else{
-          // Add for the first time
-          console.log('Added first item');
-          let newItem = [this.state.product];
-          let newItemString = JSON.stringify(newItem);
-          localStorage.setItem('cardProducts',  newItemString);
-
-       }
-      }
-
-      componentDidUpdate(){
-        setTimeout( () => {
-          this.setState({loading: false})
-        }, 2000);
-      }
-  
 
 
   render() {
@@ -129,7 +96,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
       <div>
 
         {/* Cart Dialog */}
-    <ProductCart  closeProductCartDialog={this.closeProductCartDialog} open={this.state.productCartDialogOpen}/>
+ <ProductCart  closeProductCartDialog={this.closeProductCartDialog} open={this.state.productCartDialogOpen}/>  
 
           <Dialog className="product-view-dialog" open={this.props?.open} onClose={this.closeViewProductDialog}  scroll="paper" TransitionComponent={Transition} >
         <AppBar  position="sticky" className=" app-green-bg">
@@ -150,7 +117,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
             :
             <div className="row">
             <div className="col-lg-6">
-                  <img src={iphone} className="w-100  border rounded-10"/>
+                  <img src={iphone} className="w-100  border rounded-10" alt="iphone"/>
             {/* <img src={product?.image} className="w-100  border rounded-10"/> */}
             </div>
             

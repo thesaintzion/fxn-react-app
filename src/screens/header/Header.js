@@ -11,13 +11,13 @@ import ProductCart from '../products/ProductCart';
 
 
 
-function Header() {
+function Header(props) {
 
   const [productCartDialogOpen, setProductCartDialogOpen] = React.useState(false);
-  const [productCount, setProductCount] = React.useState( JSON.parse(localStorage.getItem('cardProducts')).length);
 
   const openProductCartDialog = () =>{
-    setProductCartDialogOpen(true);
+    props.productsCount > 0 && setProductCartDialogOpen(true);
+    
   }
 
   // Close Product Cart Dialog
@@ -25,23 +25,9 @@ function Header() {
     setProductCartDialogOpen(false)
     }
 
-
-    const getCartItemCount = () => {
-        let cardProducts =  localStorage.getItem('cardProducts');
-        if(cardProducts){
-          this.setState({loading: false});
-          let itemArray = JSON.parse(cardProducts);
-          console.log('itemArray', itemArray);
-          if(itemArray.length > 0){
-          setProductCount(itemArray.length);
-          }
-        }    
-    
-    }
-
     return (
       <>
-        <ProductCart  closeProductCartDialog={closeProductCartDialog} open={productCartDialogOpen}/>
+      <ProductCart cartProducts={props.cartProducts} updateLocalStorage={props.updateLocalStorage}  closeProductCartDialog={closeProductCartDialog} open={productCartDialogOpen}/> 
 
         <AppBar position="sticky" className="shadow-sm bg-white">
         <div className="container">
@@ -51,7 +37,7 @@ function Header() {
           </Typography>
 
           <IconButton onClick={openProductCartDialog} aria-label="upload picture" component="span">
-            <Badge badgeContent={productCount} color="secondary">
+            <Badge badgeContent={props.productsCount > 0 ? props.productsCount : '0'} color="secondary">
             <ShoppingCartIcon className="app-green-color" />
             </Badge>
           </IconButton>
