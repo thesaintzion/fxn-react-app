@@ -9,8 +9,6 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Slide from '@material-ui/core/Slide';
 import axios from "axios";
 import  AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import ProductCart from './ProductCart';
-
 
 // Animate dialog from left
 const Transition = React.forwardRef(function Transition(props, ref) {

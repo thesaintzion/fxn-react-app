@@ -34,19 +34,28 @@ import { PaystackButton } from 'react-paystack'
       name,
       phone,
     },
-    payStackKey,
+    publicKey: payStackKey,
     text: "PROCEED",
-    onSuccess: onSuccess(),
-    onClose:  onClose(),
+    onSuccess: onSuccess,
+    onClose:  onClose,
   }
 
+
+
+  // proceed  btn
+  const proceed = () => {
+    //   if(name.trim() === "" || email.trim() === "" || phone.trim() === ""){
+    //       alert('Please fill in all fields')
+    //   }else{
+          
+    //   }
+   document.getElementById('paystack-btn').click();
+  }
  
   
 
 
-React.useEffect(() => {
-console.log(componentProps)
-}, [])
+ 
 
 
     return (
@@ -55,6 +64,7 @@ console.log(componentProps)
 <ArrowBackIcon />
 </IconButton>
     <h3>Make Payment <span>{amount}</span></h3>
+    <p>All fields are required <span className="text-danger">*</span></p>
 <form>
  <TextField
     onChange={ (e) => setName(e.target.value)}
@@ -64,6 +74,7 @@ console.log(componentProps)
     type="text"
     label="Name"
     variant="outlined"
+    required
         />
     <TextField
     onChange={ (e) => setEmail(e.target.value)}
@@ -73,6 +84,7 @@ console.log(componentProps)
     type="email"
     label="Email"
     variant="outlined"
+    required
     />
 
     <TextField
@@ -83,14 +95,14 @@ console.log(componentProps)
     type="phone"
     label="Phone"
     variant="outlined"
-  
+    required
     />
 
   </form>
 
 <div className="text-center mt-5 mb-5 d-flex justify-content-around">
-<PaystackButton disabled className="rounded-60 app-green-bg text-white shadow-sm px-5 btn" {...componentProps} />
-    {/* <Button className="rounded-60 app-green-bg text-white shadow-sm px-3"><span> Proceed </span> <ArrowForwardIcon/></Button> */}
+<PaystackButton  id="paystack-btn" className="rounded-60 app-green-bg text-white shadow-sm px-5 btn" {...componentProps} />
+{/* <Button onClick={proceed} className="rounded-60 app-green-bg text-white shadow-sm px-3"><span> Proceed </span> <ArrowForwardIcon/></Button> */}
 </div>
         </div>
     )

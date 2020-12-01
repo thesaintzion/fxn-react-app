@@ -29,7 +29,7 @@ class ProductCart extends React.Component {
           totalPrice:  0,
           loading: true,
           products: [],
-          makePayment: true
+          makePayment: false
           
         }
       }
