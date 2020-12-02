@@ -2,26 +2,42 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import IconButton from '@material-ui/core/IconButton';
-import { PaystackButton } from 'react-paystack'
-
-
-
+import { PaystackButton } from 'react-paystack';
+import Snackbar from '@material-ui/core/Snackbar'; 
 
  function MakePayment(props) {
 
-  const payStackKey = 'pk_test_35059932bc296eafec72754c75b151d20b6a669c';
-  const amount = props.amount * 100;
+  const payStackKey = 'pk_test_c588db9c83c7e903a8b7bd5ac3646ada1b2be4a3';
+  let m = props.amount;
+  const amount = m  * 100;
   const [email, setEmail] = React.useState("")
   const [name, setName] =  React.useState("")
   const [phone, setPhone] =  React.useState("")
+  const [snackBarOpen, setSnackBarOpen] = React.useState(false)
+  const [ snackBarMessage, setSnackBarMessage] = React.useState("")
 
 
   const onSuccess = () =>{
-    alert("Thanks for doing business with us! Come back soon!!")
+    snackBarShow('Thanks for doing business with us!');
+    props.clearCart();
+ 
   } 
   
   const onClose = () => {
-    alert("Wait! Don't leave :(")
+    snackBarShow('Please don\'t go away')
+  }
+
+  const snackBarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackBarOpen(false);
+  };
+
+
+  const snackBarShow = (m) => {
+    setSnackBarOpen(true);
+    setSnackBarMessage(m)
   }
   
   const componentProps = {
@@ -39,11 +55,19 @@ import { PaystackButton } from 'react-paystack'
 
 
     return (
+<> 
+
+<Snackbar  anchorOrigin={{vertical: 'bottom', horizontal: 'left'}} open={snackBarOpen} autoHideDuration={6000} onClose={snackBarClose}> 
+<div className="bg-dark text-white px-4 py-2 shadow animated  rounded-60" >{snackBarMessage}</div>
+</Snackbar>
+
     <div className="animated fadeInRight faster">
         <IconButton  onClick={props.cancelPayment} edge="start" color="inherit" aria-label="close">
 <ArrowBackIcon />
 </IconButton>
-    <h3>Make Payment <span>{amount}</span></h3>
+    <h3>Make Payment
+        {/* <span>{amount.toLocaleString(undefined, {maximumFractionDigits:2})}  | {amount}</span> */}
+    </h3>
     <p>All fields are required <span className="text-danger">*</span></p>
 <form>
  <TextField
@@ -85,6 +109,7 @@ import { PaystackButton } from 'react-paystack'
 {/* <Button onClick={proceed} className="rounded-60 app-green-bg text-white shadow-sm px-3"><span> Proceed </span> <ArrowForwardIcon/></Button> */}
 </div>
         </div>
+        </>
     )
 }
 

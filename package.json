@@ -19,6 +19,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "mv build ../fxn-app-deploy -f && cd .. && cd fxn-app-deploy &&  git add . && git commit updated && git push heroku master && echo DEPLOYED",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -107,12 +107,12 @@ class ProductCart extends React.Component {
             </div> : 
             <main className="pb-3 pt-5 app-green-light-b mh-100">
                 <div className="container px-lg-4">  
-                        {this.state.makePayment ? <MakePayment cancelPayment={this.cancelPayment}  amount={this.totalPrice()}/> 
+                        {this.state.makePayment ? <MakePayment clearCart={this.props.clearCart} cancelPayment={this.cancelPayment}  amount={this.totalPrice()}/> 
                         :
                         <div>
                         { this.props?.cartProducts?.length > 0 ? this.props?.cartProducts?.map(product => (
 
-                        <div key={product.id}  className="shadow-sm rounded-10 mb-3 overflow-hidden d-flex justify-content-between align-items-center bg-light">
+                        <div key={product.id}  className="shadow-sm rounded-10 mb-3 overflow-hidden d-flex justify-content-between align-items-center bg-white">
                         <div>
                           <img  width="100"  src={product?.image}  alt={product?.title}/>
                         </div>

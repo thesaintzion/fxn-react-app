@@ -4,8 +4,7 @@ import {  Route, Switch } from 'react-router-dom';
 import Header from './screens/header/Header';
 import Products from './screens/products/Products';
 import ProductCart from './screens/products/ProductCart';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar'; 
 
 class App extends  Component {
 
@@ -16,18 +15,20 @@ class App extends  Component {
       productsCount: localStorage.getItem('cardProducts') ? JSON.parse(localStorage.getItem('cardProducts')).length : 0,
       loading: true,
       cartProducts: [],
-      productCartDialogOpen: false
+      productCartDialogOpen: false,
+      snackBarOpen: false,
+      snackBarMessage: ''
     }
   }
 
   componentDidMount(){
     this.getProductsFromLocalStorage();
-    this.showAlert('Welcome');
+  
   }
+
 
   addProductToCart = (product) => {  
     this.addToLocalStorage(product);
-
     setTimeout( () => {
       this.setState({
         productCartDialogOpen: true
@@ -44,19 +45,19 @@ class App extends  Component {
     let itemExist =  itemArray.filter((item) => item.id === product.id);
 
   if(itemExist.length > 0){
-    alert("Item already in cart...");
+    this.snackBarShow('Product exists in cart');
   }else{
     itemArray.push(product)
     let newItemString = JSON.stringify(itemArray);
     localStorage.setItem('cardProducts',  newItemString)
-    alert("Product added to cart");
+    this.snackBarShow('Product added to cart');
   }
 
   }else{
     let newItem = [product];
     let newItemString = JSON.stringify(newItem);
     localStorage.setItem('cardProducts',  newItemString);
-    alert("Product added to cart");
+    this.snackBarShow('Product added to cart');
   }
 
   this.updateProductsCount();
@@ -93,8 +94,6 @@ removeCartProduct = (id) =>{
   let cardProducts =  localStorage.getItem('cardProducts')
   let itemArray = JSON.parse(cardProducts);
 
-  console.log(itemArray.length)
-
   if(itemArray.length === 1){
     this.clearCart();
   }else{
@@ -111,8 +110,8 @@ removeCartProduct = (id) =>{
 clearCart = () => {
   localStorage.removeItem('cardProducts');
   this.getProductsFromLocalStorage();
-  this.closeProductCartDialog()
-  alert('Cart cleared');
+  this.closeProductCartDialog();
+  // this.snackBarShow('Cart cleared');
 }
 
 // Update  count 
@@ -141,28 +140,28 @@ closeProductCartDialog = () =>{
 }
 
 
-// Alert
-showAlert = (message) => {
-  return( <Snackbar open={true} autoHideDuration={6000} onClose={handleClose}>
-  <Alert onClose={this.closeAlert} severity="success">
-    This is a {message}
-  </Alert>
-</Snackbar>)
-}
-
-// Alert close
-closeAlert = (event, reason) => {
+snackBarClose = (event, reason) => {
   if (reason === 'clickaway') {
     return;
   }
-
-  setOpen(false);
+  this.setState({
+    snackBarOpen: false
+  });
 };
 
-
+snackBarShow = (m) => {
+  this.setState({
+    snackBarOpen: true,
+    snackBarMessage: m
+  })
+}
   render(){  
     return (
       <>
+     <Snackbar  anchorOrigin={{vertical: 'bottom', horizontal: 'left'}} open={this.state.snackBarOpen} autoHideDuration={4000} onClose={this.snackBarClose}> 
+    <div className="bg-dark text-white px-4 py-2 shadow animated  rounded-60" >{this.state.snackBarMessage}</div>
+     </Snackbar>
+
     <ProductCart  removeCartProduct={this.removeCartProduct}  clearCart={this.clearCart} cartProducts={this.state.cartProducts} updateLocalStorage={this.updateLocalStorage}  closeProductCartDialog={this.closeProductCartDialog} open={this.state.productCartDialogOpen}/> 
     <Header openProductCartDialog={this.openProductCartDialog}  productsCount={this.state.productsCount}/>
      
@@ -176,6 +175,13 @@ closeAlert = (event, reason) => {
      </Route>
 
       </Switch>
+
+      <footer className="text-center py-3  mt-5 text-muted">
+      <small> Author: St. Stephen (+234 9055175876, stephen76494@gmail.com)</small>
+      <br/>
+      <a className="app-green-color" href="https://github.com/thesaintzion">https://github.com/thesaintzion</a>
+      </footer>
+
       </>
       );
   }
