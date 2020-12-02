@@ -144,8 +144,8 @@ class ProductCart extends React.Component {
                       <div  className="mt-4 mb-5 pr-3">
                           <li  className="text-right">Total Price:  <h3 className="app-green-color mb-0">&#8358;{this.totalPrice().toLocaleString(undefined, {maximumFractionDigits:2})}</h3></li>
                       </div>
-                           <br/><br/> <br/><br/>   <br/><br/>   
-                  <div className="text-center mt-5 mb-5 d-flex justify-content-around">
+                           <br/>  
+                  <div className="text-center mt-5 mb-5 d-flex justify-content-around flex-wrap">
                   <Button onClick={this.closeProductCartDialog} className="rounded-60 app-green-color bg-white shadow-sm"><ArrowBackIcon/> <span> Continue Shopping </span></Button>  <Button  onClick={this.makePayment} className="rounded-60 app-green-bg text-white shadow-sm"><span> Make Payment </span> <ArrowForwardIcon/></Button>
                 </div>
 

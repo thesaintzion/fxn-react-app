@@ -4,6 +4,8 @@ import {  Route, Switch } from 'react-router-dom';
 import Header from './screens/header/Header';
 import Products from './screens/products/Products';
 import ProductCart from './screens/products/ProductCart';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 class App extends  Component {
 
@@ -20,9 +22,8 @@ class App extends  Component {
 
   componentDidMount(){
     this.getProductsFromLocalStorage();
-  
+    this.showAlert('Welcome');
   }
-
 
   addProductToCart = (product) => {  
     this.addToLocalStorage(product);
@@ -31,13 +32,12 @@ class App extends  Component {
       this.setState({
         productCartDialogOpen: true
       })
-    },2000);
+    },1000);
    
    }
 
   // Add to local storage
-  addToLocalStorage = (product) =>{
-  // 01. Check  if item exists...  
+  addToLocalStorage = (product) =>{ 
   let cardProducts =  localStorage.getItem('cardProducts')
   if(cardProducts){
     let itemArray = JSON.parse(cardProducts);
@@ -45,9 +45,7 @@ class App extends  Component {
 
   if(itemExist.length > 0){
     alert("Item already in cart...");
-    console.log('Exists', itemExist);
   }else{
-    // Add new
     itemArray.push(product)
     let newItemString = JSON.stringify(itemArray);
     localStorage.setItem('cardProducts',  newItemString)
@@ -55,7 +53,6 @@ class App extends  Component {
   }
 
   }else{
-
     let newItem = [product];
     let newItemString = JSON.stringify(newItem);
     localStorage.setItem('cardProducts',  newItemString);
@@ -142,6 +139,25 @@ closeProductCartDialog = () =>{
 
   this.updateProductsCount();
 }
+
+
+// Alert
+showAlert = (message) => {
+  return( <Snackbar open={true} autoHideDuration={6000} onClose={handleClose}>
+  <Alert onClose={this.closeAlert} severity="success">
+    This is a {message}
+  </Alert>
+</Snackbar>)
+}
+
+// Alert close
+closeAlert = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setOpen(false);
+};
 
 
   render(){  
